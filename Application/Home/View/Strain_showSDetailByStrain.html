@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>MDB - Strain page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link href="__PUBLIC__/css/Strain_showDetailByStrain.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/tablecloth/tablecloth.css" rel="stylesheet" type="text/css" media="screen" />
+<!--[if lt IE 7]>
+	<link href="__PUBLIC__/css/Index_index_ie.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<script type="text/javascript" src="__PUBLIC__/tablecloth/tablecloth.js"></script>
+<script src="__PUBLIC__/myselect/mSelect.js"></script>
+
+<script type="text/javascript">
+	var mySelect=new mSelect('mySelect','__PUBLIC__/myselect/mSelect.css');
+	function create(aS){
+		for (var i=0;i<aS.length;i++){
+			switch(aS[i].getAttribute('mSty')){
+				case 'redLine':
+					mySelect.Create(aS[i],'redLine');
+					break;
+				case 'blueCircle':
+					mySelect.Create(aS[i],'blueCircle',true);
+					break;
+				case 'orangeHeart':
+					mySelect.Create(aS[i],'orangeHeart',true);
+					break;
+			}
+		}
+	}
+	window.onload=function(){
+		var aS=document.getElementsByTagName('select');
+		create(aS);
+	}
+</script>
+
+<style>
+	body{
+		background: #E7E7E7;
+	}
+	
+	.gd-td{
+			color:#FFFFFF;
+			text-align: center;
+		}
+	.MF-td{
+		color:#0092DC;
+		text-align: center;
+	}
+	
+	#graph-div{
+		margin:0% auto;
+		margin-top:10px;
+		width:98%;
+	}
+	
+	table td{
+		font-size: 15px;
+	}
+	
+	table th{
+		font-size: 15px;
+	}
+</style>
+</head>
+
+<body>
+  <!-- header -->
+  <div id="header">
+    <div class="row-1">
+    	<div class="container">
+      	<h1><a >Xiao's<span>Lab</span></a></h1>
+        <a href="#" class="rss"><img src="__PUBLIC__/image/index/rss.jpg" alt="" /></a>
+      </div>
+    </div>
+    <div class="row-2">
+    	<div class="container">
+      	<!-- .nav -->
+      	<ul class="nav">
+          <li class="first"><a href="{:U('Home/Index/index','','')}" >Home</a></li>
+          <li><a href="{:U('Home/Survey/showSurvey','','')}" >Survey</a></li>
+          <li><a href="{:U('Home/Strain/showStrain','','')}" class="current">Strain</a></li>
+          <li><a href="{:U('Home/Gene/showGene','','')}">Gene</a></li>
+          <li id="search-li" style="background: none;"><input id="searchcontent" name="searchcontent" type="text"/><input id="search-btn" type="button" value="GO"/></li>
+        </ul>
+      	<!-- /.nav -->
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- content -->
+  <div id="content" style="padding-bottom: 5px;">
+  	<div id="current-position">
+  		<div id="current-position-text">
+  			<div class="text-location"><span style="color: #5B88C4;font-size: 15px;">Current&nbsp;Location&nbsp;</span>><a style="color: #0075D2;">&nbsp;Data details</a></div>
+  			<div class="text-strain">
+  					<div  id="h2">Mouse Indexes</div>
+  			</div>
+  			<div  id="select-index" >
+  						<p>
+  						<span style="float: left;margin-right: 10px;">
+						<select  id="findex-sel" name="addr" mSty="blueCircle" onchange="getSindex(this.options[this.selectedIndex].value);">
+							<foreach name="findexList" item="fil">
+							<option value="{$fil.findex_id}">{$fil.findex_name}</option>
+							</foreach>
+						</select>
+						</span>
+						<span style="float: left;">
+						<select  id="sindex-sel" name="addr" mSty="blueCircle" >
+							<foreach name="sindexList" item="sil">
+								<option value="{$sil.map_id}">{$sil.name}</option>
+							</foreach>
+						</select>
+						</span>
+						<img id="sel-index-btn" onclick="selectIndex();" onmouseover="getBackImg(1)" onmouseout="getBackImg(2)" style="width: 30px; height: 30px;margin-left: 5px;" src="__PUBLIC__/image/strain/go.jpg" />
+						</p>
+  			</div>
+  			<div id="sindex-sel1" style="display: none;">
+							{{#sindexList}}
+							<option value="{{map_id}}">{{name}}</option>
+							{{/sindexList}}
+			</div>
+  		</div>
+  		<div id="current-position-img">
+  			<img style="width: auto;height: 180px;" src="__PUBLIC__/image/strain/show_strain.jpg" />
+  		</div>
+  	</div>
+  	<div id="strain-list">
+  		<div id="select-info">
+  			<p>Index：
+  				<span>
+  				<if condition="($sindex neq null) and ($sindex neq '')">
+  				{$findex.findex_name}&nbsp;>&nbsp;{$sindex.name}<if condition="($sindex['unit'] neq null) and ($sindex['unit'] neq '')">({$sindex.unit})</if>
+  				</if>
+  				<if condition="($sindex eq null) or ($sindex eq '')">
+  				<span style="color:#D83737;">Please select index.</span>
+  				</if>
+  				</span>
+  			</p>
+  			<p>Remark：<span><if condition="$sindex.remark eq null or $sindex.remark eq ''">none</if>{$sindex.remark}</span></p>
+  			<if condition="($selectStrain eq null) or ($selectStrain eq '')">
+  				<p style="margin-top:8px;">Strains：<span style="color:#D83737;">Please select at least one strain.</span></p>
+  			</if>
+  			<if condition="($selectStrain neq null) and ($selectStrain neq '')">
+  				<p>Strains：<span>{$selectStrain}</span></p>
+  			</if>
+  		</div>
+  		<div id="data-info">
+  		<for start="0" end="$count">
+	  		<table id="tab-list" cellspacing="0" cellpadding="0" style="font-size:15px;">
+				<tr>
+					<th>Mouse ID</th>
+					<th>strain</th>
+					<th>gender</th>
+					<th>birth date</th>
+					<th>experiment date</th>
+					<th>{$sindex.name}</th>
+					<th>remark</th>
+				</tr>
+			<foreach name="mouseDataList[$i]" item="mdl1">
+				<if condition="trim($mdl1['gender']) eq M">
+				<tr>
+					<td>{$mdl1['mouse_num']}</td>
+					<td>{$mdl1['strain']}</td>
+					<td>{$mdl1['gender']}</td>
+					<td>{$mdl1['birth_date']}</td>
+					<td>{$mdl1['exp_time']}</td>
+					<td>{$mdl1[$sindex['index']]}</td>
+					<td>{$mdl1['remark']}</td>
+				</tr>
+				</if>
+			</foreach>
+			
+			<if condition="($mf_count[$i][M] eq 1) and ($mf_count[$i][F] eq 1)">
+			<tr>
+				<td style="background-color: #FFFFFF;height: 10px;" class="MF-td"></td>
+				<td style="background-color: #FFFFFF; height: 10px;" class="MF-td"></td>
+				<td style="background-color: #FFFFFF; height: 10px;" class="MF-td"></td>
+				<td style="background-color: #FFFFFF; height: 10px;" class="MF-td"></td>
+				<td style="background-color: #FFFFFF; height: 10px;" class="MF-td"></td>
+				<td style="background-color: #FFFFFF; height: 10px;" class="MF-td"></td>
+				<td style="background-color: #FFFFFF; height: 10px;" class="MF-td"></td>
+			</tr>
+			</if>
+
+			<foreach name="mouseDataList[$i]" item="mdl2">
+				<if condition="trim($mdl2['gender']) eq F">
+				<tr>
+					<td>{$mdl2['mouse_num']}</td>
+					<td>{$mdl2['strain']}</td>
+					<td>{$mdl2['gender']}</td>
+					<td>{$mdl2['birth_date']}</td>
+					<td>{$mdl2['exp_time']}</td>
+					<td>{$mdl2[$sindex['index']]}</td>
+					<td>{$mdl2['remark']}</td>
+				</tr>
+				</if>	
+			</foreach>
+	  		</table>
+	  		<div style="height: 2px; width: 100%; border-bottom: 1px dashed #CCCCCC;"></div>
+		</for>
+  		</div>
+  	</div>
+  </div>
+  
+  <!-- footer -->
+  <div id="footer">
+  	<div class="container">
+      <div class="indent">
+      <div class="v">	Fly&nbsp;Moon &copy; 2014&nbsp;v1.0&nbsp;&nbsp;&nbsp;{$Think.now}</div>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="__PUBLIC__/mustache/mustache.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/echarts/build/echarts-plain-map.js"></script>
+<script>
+	$('#search-btn').click(function(){
+		$searchcontent = $('#searchcontent').val().trim().toLowerCase();
+		if($searchcontent.trim() == '' || $searchcontent.trim() == null){
+			layer.alert('Please enter the search content.', 3,'warn');
+			return ;
+		}else{
+			if($searchcontent == 'strain'){
+				window.location.href = "{:U('Home/Strain/showStrain','','')}";
+			}else if($searchcontent == 'survey'){
+				window.location.href = "{:U('Home/Survey/showSurvey','','')}";
+			}
+		}
+	});
+</script>
+<script>
+	function getBackImg(type){
+		if(type == '1'){
+			$('#sel-index-btn').attr('src','__PUBLIC__/image/strain/go1.jpg' );
+		}
+		if(type == '2'){
+			$('#sel-index-btn').attr('src','__PUBLIC__/image/strain/go.jpg' );
+		}
+	}
+	
+	function getSindex(findex_id){
+		$.post('{:U("Home/Survey/getSindex","","")}',
+		{findex_id:findex_id},
+		function(data){
+			var tpl = $('#sindex-sel1').html();
+			var html = Mustache.render(tpl, data);
+			$('#sindex-sel').html(html);
+			$('.blueCircle_mSel_main').remove();
+			var aS=document.getElementsByTagName('select');
+			create(aS);
+		});
+	}
+	
+	
+	function selectIndex(){
+		var findex_id = $('#findex-sel').val();
+		var map_id = $('#sindex-sel').val();
+		var strain_name = '{$selectStrain}';
+		$url = '{:U("Home/Strain/getDetailData","","")}?findex_id='+findex_id+'&map_id='+map_id+'&strain_name='+strain_name;
+		window.location.href = $url;
+	}
+</script>
+
+</html>

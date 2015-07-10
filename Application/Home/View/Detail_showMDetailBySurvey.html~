@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>MDB - Survey page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link href="__PUBLIC__/css/Detail_showDetailBySurvey.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/tablecloth/tablecloth.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="__PUBLIC__/tablecloth/tablecloth.js"></script>
+<!--[if lt IE 7]>
+	<link href="__PUBLIC__/css/Index_index_ie.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<style>
+	body{
+		background: #E7E7E7;
+	}
+	
+	.gd-td{
+			color:#FFFFFF;
+			text-align: center;
+		}
+	.MF-td{
+		color:#0092DC;
+		text-align: center;
+	}
+	
+	#graph-div{
+		margin:0% auto;
+		margin-top:10px;
+		width:98%;
+	}
+	
+	table td{
+		font-size: 15px;
+	}
+	
+	table th{
+		font-size: 15px;
+	}
+</style>
+
+</head>
+
+<body>
+  <!-- header -->
+  <div id="header">
+    <div class="row-1">
+    	<div class="container">
+      	<h1><a ><span>Lab</span></a></h1>
+        <a href="#" class="rss"><img src="__PUBLIC__/image/index/rss.jpg" alt="" /></a>
+      </div>
+    </div>
+    <div class="row-2">
+    	<div class="container">
+      	<!-- .nav -->
+      	<ul class="nav">
+          <li class="first"><a href="{:U('Home/Index/index','','')}" >Home</a></li>
+          <li><a href="{:U('Home/Survey/showSurvey','','')}" class="current">Survey</a></li>
+          <li style="margin-right: 230px;"><a href="{:U('Home/Strain/showStrain','','')}">Strain</a></li>
+          <li id="search-li" style="background: none;"><input id="searchcontent" name="searchcontent" type="text"/><input id="search-btn" type="button" value="GO"/></li>
+        </ul>
+      	<!-- /.nav -->
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- content -->
+  <div id="content" style="padding-bottom: 5px;">
+  	<div id="current-position">
+  		<div id="current-position-text">
+  			<div class="text-location"><span style="color: #5B88C4;font-size: 15px;">Current&nbsp;Location&nbsp;</span>><a style="color: #0075D2;">&nbsp;Data details</a></div>
+  			<div class="text-survey">
+  					<div  id="h2">List strains</div>
+  					<div  id="select-strain" onmouseout="selectStrain('2');" onmouseover="selectStrain('1');">Select Strain</div>
+  			</div>
+  				
+  		</div>
+  		<div id="current-position-img">
+  			<img style="width: auto;height: 180px;" src="__PUBLIC__/image/strain/show_strain.jpg" />
+  		</div>
+  	</div>
+  	<div id="survey-list">
+  		<div id="select-info">
+  			<p>Index：<span>{$findex.findex_name}&nbsp;>&nbsp;{$sindex.name}<if condition="($sindex['unit'] neq null) and ($sindex['unit'] neq '')">({$sindex.unit})</if></span></p>
+  			<p>Remark：<span><if condition="$sindex.remark eq null or $sindex.remark eq ''">none</if>{$sindex.remark}</span></p>
+  			<if condition="($selectStrain eq null) or ($selectStrain eq '')">
+  				<p style="margin-top:8px;">Strains：<span style="color:#D83737;">Please select at least one strain.</span></p>
+  			</if>
+  			<if condition="($selectStrain neq null) and ($selectStrain neq '')">
+  				<p>Strains：<span>{$selectStrain}</span></p>
+  			</if>
+  		</div>
+  		<if condition="$graphData['re'] neq null">
+  		<div id="data-info" style="margin-top:10px;">
+  		<p>
+  			If you want to view detailed data, you can click <a href="#" onclick="showDetailTable()">data table</a>.
+  		</p>
+  		</div>
+  		<table id="tab-list" cellspacing="0" cellpadding="0" style="font-size:15px; width:98%;margin: 0% auto;">
+				<tr>
+					<th>gender</th>
+					<th>experiment date</th>
+					<th>N</th>
+					<th>AVG</th>
+					<th>SD</th>
+					<th>STD</th>
+					<th style="text-align: center;">|</th>
+					<th>gender</th>
+					<th>experiment date</th>
+					<th>N</th>
+					<th>AVG</th>
+					<th>SD</th>
+					<th>STD</th>
+				</tr>
+			<for start="0" end="$graphData['re']['dateCount']" name="k">
+				<tr>
+					<td>M</td>
+					<td>{$k+1}&nbsp;day</td>
+					<if condition="($graphData['re']['M'][$k+1] neq null) and ($graphData['re']['M'][$k+1] neq '')">
+					<td>{$graphData['re']['M'][$k+1]['n']}</td>
+					<td>{$graphData['re']['M'][$k+1]['avg']}</td>
+					<td>{$graphData['re']['M'][$k+1]['sd']}</td>
+					<td>{$graphData['re']['M'][$k+1]['std']}</td>
+					<else/>
+					<td>--</td>
+					<td>--</td>
+					<td>--</td>
+					<td>--</td>
+					</if>
+					<td style="text-align: center;">|</td>
+					<td>F</td>
+					<td>{$k+1}&nbsp;day</td>
+					<if condition="($graphData['re']['F'][$k+1] neq null) and ($graphData['re']['F'][$k+1] neq '')">
+					<td>{$graphData['re']['F'][$k+1]['n']}</td>
+					<td>{$graphData['re']['F'][$k+1]['avg']}</td>
+					<td>{$graphData['re']['F'][$k+1]['sd']}</td>
+					<td>{$graphData['re']['F'][$k+1]['std']}</td>
+					<else/>
+					<td>--</td>
+					<td>--</td>
+					<td>--</td>
+					<td>--</td>
+					</if>
+				</tr>
+			</for>
+		</table>
+  		<div id="graph-div" style="height:500px;border:1px solid #ccc;padding:0px;margin-top:10px;"></div>
+  		</if>
+  	</div>
+  </div>
+  
+  <!-- footer -->
+  <div id="footer">
+  	<div class="container">
+      <div class="indent">
+      <div class="v">	Fly&nbsp;Moon &copy; 2014&nbsp;v1.0&nbsp;&nbsp;&nbsp;{$Think.now}</div>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/echarts/build/echarts-plain-map.js"></script>
+<script>
+	$('#search-btn').click(function(){
+		$searchcontent = $('#searchcontent').val().trim().toLowerCase();
+		if($searchcontent.trim() == '' || $searchcontent.trim() == null){
+			layer.alert('Please enter the search content.', 3,'warn');
+			return ;
+		}else{
+			if($searchcontent == 'strain'){
+				window.location.href = "{:U('Home/Strain/showStrain','','')}";
+			}else if($searchcontent == 'survey'){
+				window.location.href = "{:U('Home/Survey/showSurvey','','')}";
+			}
+		}
+	});
+</script>
+<script>
+	function showDetailTable(){
+		/* var detail_data = '{$detail_data}'; */
+		
+		var detail_data = "";
+		var detail = escape(detail_data);
+		$url = "{:U('Home/Detail/dataTable','','')}?detail_data="+detail;
+		window.open($url,'Detail Data','width=1118,height=700');
+	}
+
+
+	function selectStrain(type){
+		if(type == '1'){
+			$('#select-strain').css({'background-image':' url(__PUBLIC__/image/survey/select-strain1.jpg)' });
+			$('#select-strain').css('color','#F1680C');
+		}
+		if(type == '2'){
+			$('#select-strain').css({'background-image':' url(__PUBLIC__/image/survey/select-strain.jpg)' });
+			$('#select-strain').css('color','#886720');
+		}
+	}
+	
+	$('#select-strain').click(function(){
+		var findex_id = "{$findex['findex_id']}";
+		var map_id = "{$sindex['map_id']}";
+		$url = '{:U("Home/Detail/strainList","","")}?findex_id='+findex_id+'&map_id='+map_id;
+		$.layer({
+		    type: 1,
+		    title: 'All Strains',
+		    area: ['420px', '260px'],
+		    shade: [0.5,'#000',true],
+		    offset: ['200px',($(window).width() - 420)/2 + 'px'],
+		    zIndex: 19,
+		    page: {
+		       url:$url
+		    }, success: function(){
+		        layer.shift('left'); //左边动画弹出
+		    }
+		});
+	});
+</script>
+
+<script>
+	var t_str = "{$graphData['re']['t_str']}";
+	var m_str = "{$graphData['re']['m_str']}";
+	var f_str = "{$graphData['re']['f_str']}";
+	var male_list = m_str.split(',');
+	var female_list = f_str.split(',');
+	var t_list = t_str.split(',');
+	
+	var myChart = echarts.init(document.getElementById('graph-div'));
+    myChart.setOption({
+    	title:{
+    		text:'Date-Avg',
+    		textStyle:{
+    			fontSize: 15
+    		}
+    	},
+        tooltip : {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['M','F']
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType : {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                data : t_list,
+                name: 'date (day)',
+                boundaryGap:false
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value',
+                splitArea : {show : true},
+                name: 'avg'
+            }
+        ],
+        series : [
+            {
+                name:'M',
+                type:'line',
+                data:male_list,
+            },
+            {
+                name:'F',
+                type:'line',
+                data:female_list,
+	         }
+        ]
+    });
+</script>
+
+</html>

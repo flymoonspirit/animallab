@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>MDB - Gene page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link href="__PUBLIC__/css/Strain_showStrain.css" rel="stylesheet" type="text/css" />
+<!--[if lt IE 7]>
+	<link href="__PUBLIC__/css/Index_index_ie.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<style>
+
+
+		.table{
+			width:auto;
+			border:1px solid green;
+			cellspacing:1px;
+			background:green;
+			height: auto;
+			
+		}
+		.table td{
+			width:auto;
+			background:white;
+			align:center;
+			word-break : break-all;
+			min-width:50px;
+			color:black;
+			
+		}
+	body{
+	  background: #E7E7E7;
+	}
+	
+	#next-div{
+		position: fixed;
+		bottom: 0px;
+		right: 60px;
+		width: 180px;
+		height: 150px;
+	}
+	
+	#next-div img{
+		width:150px;
+		height: 100px;
+		
+	}
+	
+	.select-img{
+		display: none;
+	}
+
+</style>
+
+</head>
+
+<body style="">
+  <!-- header -->
+  <div id="header">
+    <div class="row-1">
+    	<div class="container">
+      	<h1><a >Xiao's<span>Lab</span></a></h1>
+        <a href="#" class="rss"><img src="__PUBLIC__/image/index/rss.jpg" alt="" /></a>
+      </div>
+    </div>
+    <div class="row-2">
+    	<div class="container">
+      	<!-- .nav -->
+      	<ul class="nav">
+          <li class="first"><a href="{:U('Home/Index/index','','')}" >Home</a></li>
+          <li><a href="{:U('Home/Survey/showSurvey','','')}" >Survey</a></li>
+          <li><a href="{:U('Home/Strain/showStrain','','')}" >Strain</a></li>
+          <li ><a href="{:U('Home/Gene/showGene','','')}" class="current">Gene</a></li>
+          <li id="search-li" style="background: none;"><input id="searchcontent" name="searchcontent" type="text"/><input id="search-btn" type="button" value="GO"/></li>
+        </ul>
+      	<!-- /.nav -->
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- content -->
+	 <div style="width: auto;margin:0 auto;height: auto;">
+	 	<table class='table'>
+			<foreach name='index' item='k'>
+				<td>{$k.name}</td>
+			</foreach>
+		 	<foreach name='data' item='v'>
+		 		<tr>
+		 			
+		 				<td>{$v.index_1}</td>
+		 				<td>{$v.index_2}</td>
+		 				<td>{$v.index_3}</td>
+		 				<td>{$v.index_4}</td>
+		 				<td>{$v.index_5}</td>
+		 				<td>{$v.index_6}</td>
+		 				<td>{$v.index_7}</td>
+		 				<td>{$v.index_8}</td>
+		 				<td>{$v.index_9}</td>
+		 				<td>{$v.index_10}</td>
+		 				<td>{$v.index_11}</td>
+		 				<td>{$v.index_12}</td>
+		 				<td>{$v.index_13}</td>
+		 				<td>{$v.index_14}</td>
+		 				<td>{$v.index_15}</td>
+		 				<td>{$v.index_16}</td>
+		 				<td>{$v.index_17}</td>
+		 				<td>{$v.index_18}</td>
+		 				<td>{$v.index_19}</td>
+		 				<td>{$v.index_20}</td>
+		 				<td>{$v.index_21}</td>
+		 				<td>{$v.index_22}</td>
+		 				<td>{$v.index_23}</td>
+		 				<td>{$v.index_24}</td>
+		 				<td>{$v.index_25}</td>
+		 				<td>{$v.index_26}</td>
+		 				<td>{$v.index_27}</td>
+		 				<td>{$v.index_28}</td>
+		 				<td>{$v.index_29}</td>
+		 				<td>{$v.index_30}</td>
+		 				<td>{$v.index_31}</td>
+		 				<td>{$v.index_32}</td>
+		 				<td>{$v.index_33}</td>
+		 				<td>{$v.index_34}</td>
+		 				<td>{$v.index_35}</td>
+		 				<td>{$v.index_36}</td>
+		 				<td>{$v.index_37}</td>
+		 				<td>{$v.index_38}</td>
+		 				<td>{$v.index_39}</td>
+		 				<td>{$v.index_40}</td>
+		 			
+		 		</tr>
+	 		</foreach>
+	 	</table>
+	 </div>
+  
+  <!-- footer -->
+  <div id="footer">
+  	<div class="container">
+      <div class="indent">
+      <div class="v">	Fly&nbsp;Moon &copy; 2014&nbsp;v1.0&nbsp;&nbsp;&nbsp;{$Think.now}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

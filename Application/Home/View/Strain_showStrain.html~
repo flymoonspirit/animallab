@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>MDB - Strain page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link href="__PUBLIC__/css/Strain_showStrain.css" rel="stylesheet" type="text/css" />
+<!--[if lt IE 7]>
+	<link href="__PUBLIC__/css/Index_index_ie.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<style>
+	body{
+	  background: #E7E7E7;
+	}
+	
+	#next-div{
+		position: fixed;
+		bottom: 0px;
+		right: 60px;
+		width: 180px;
+		height: 150px;
+	}
+	
+	#next-div img{
+		width:150px;
+		height: 100px;
+		
+	}
+	
+	.select-img{
+		display: none;
+	}
+
+</style>
+
+</head>
+
+<body>
+  <!-- header -->
+  <div id="header">
+    <div class="row-1">
+    	<div class="container">
+      	<h1><a ><span>Lab</span></a></h1>
+        <a href="#" class="rss"><img src="__PUBLIC__/image/index/rss.jpg" alt="" /></a>
+      </div>
+    </div>
+    <div class="row-2">
+    	<div class="container">
+      	<!-- .nav -->
+      	<ul class="nav">
+          <li class="first"><a href="{:U('Home/Index/index','','')}" >Home</a></li>
+          <li><a href="{:U('Home/Survey/showSurvey','','')}" >Survey</a></li>
+          <li style="margin-right: 230px;"><a href="{:U('Home/Strain/showStrain','','')}" class="current">Strain</a></li>
+          <li id="search-li" style="background: none;"><input id="searchcontent" name="searchcontent" type="text"/><input id="search-btn" type="button" value="GO"/></li>
+        </ul>
+      	<!-- /.nav -->
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- content -->
+  <div id="content">
+   <div id="current-position">
+      <div id="current-position-text">
+        <div class="text-location"><span style="color: #5B88C4;font-size: 15px;">Current&nbsp;Location&nbsp;</span>><a style="color: #0075D2;">&nbsp;Strain</a></div>
+        <div class="text-strain">
+          <h2>Strain</h2>
+        </div>
+      </div>
+      <div id="current-position-img">
+        <img style="width: auto;height: 180px;" src="__PUBLIC__/image/strain/show_strain.jpg" />
+      </div>
+    </div>
+    <div id="strain-list1">
+      <div id="strain-list-left">
+        <p>Please select strain</p>
+        <table id="mouse-strain">
+        <for start="0" end="$count">
+                  <tr class="strain_name_img">
+                  <td>
+	                 <if condition="($strainList[$i*5] neq null) and ($strainList[$i*5] neq '') ">
+	                  <div class="strain-list2">
+	                  	<span>
+		                  	<input style="display: none;" class="mck" type="checkbox"/>
+		                  	<span class="text-strain">{$strainList[$i*5]}</span>
+	                  	</span>
+	                  </div>
+	                 </if>
+                 </td>
+               <td>
+	               <if condition="($strainList[$i*5+1] neq null) and ($strainList[$i*5+1] neq '') ">
+	                    <div class="strain-list2">
+	                    <span>
+		                  	<input style="display: none;" class="mck" type="checkbox"/>
+	                  		<span class="text-strain">{$strainList[$i*5+1]}</span>
+	                  	</span>
+	                    </div>
+	                 </if>
+                </td>
+                 <td>
+	                 <if condition="($strainList[$i*5+2] neq null) and ($strainList[$i*5+2] neq '') ">
+	                    <div class="strain-list2">
+	                    <span>
+		                  	<input style="display: none;" class="mck" type="checkbox"/>
+	                  		<span class="text-strain">{$strainList[$i*5+2]}</span>
+	                  	</span>
+	                    </div>
+	                 </if>
+                 </td>
+                  <td>
+	                 <if condition="($strainList[$i*5+3] neq null) and ($strainList[$i*5+3] neq '') ">
+	                   <div class="strain-list2">
+	                   	<span>
+		                  	<input style="display: none;" class="mck" type="checkbox"/>
+	                  		<span class="text-strain">{$strainList[$i*5+3]}</span>
+	                  	</span>
+	                   </div>
+	                 </if>
+                 </td>
+                  <td>
+	                 <if condition="($strainList[$i*5+4] neq null) and ($strainList[$i*5+4] neq '') ">
+	                   <div class="strain-list2">
+	                   	<span>
+		                  	<input style="display: none;" class="mck" type="checkbox"/>
+	                  		<span class="text-strain">{$strainList[$i*5+4]}</span>
+	                  	</span>
+	                   </div>
+	                 </if>
+                 </td>
+                  </tr>
+        </for>
+        </table>
+      </div>
+    </div>
+    <div id="next-div">
+    <a href="javascript:void(0)" onclick="selectStrain();">
+    	<img id="next-btn"src="__PUBLIC__/image/strain/next.png">
+    </a>
+    </div>
+  </div>
+  
+  
+  <!-- footer -->
+  <div id="footer">
+  	<div class="container">
+      <div class="indent">
+      <div class="v">	Fly&nbsp;Moon &copy; 2014&nbsp;v1.0&nbsp;&nbsp;&nbsp;{$Think.now}</div>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="__PUBLIC__/mustache/mustache.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/util.js"></script>
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script>
+	$('#search-btn').click(function(){
+		$searchcontent = $('#searchcontent').val().trim().toLowerCase();
+		if($searchcontent.trim() == '' || $searchcontent.trim() == null){
+			layer.alert('Please enter the search content.', 3,'warn');
+			return ;
+		}else{
+			if($searchcontent == 'strain'){
+				window.location.href = "{:U('Home/Strain/showStrain','','')}";
+			}else if($searchcontent == 'survey'){
+				window.location.href = "{:U('Home/Survey/showSurvey','','')}";
+			}
+		}
+	});
+</script>
+<script>
+ function selectStrain(){
+ 		$flag = 0;
+		$selectData = [];
+		$(".mck").each(function(){
+			if($(this).is(':checked') == true){
+				$strain = $(this).parent('span').children('span').text();
+				$str= urlReplace($strain);
+				$selectData.push($str);
+				$flag = 1;
+			}
+		});
+		if($flag == 0){
+			layer.alert('Please select at least one strain!', 3);
+			return ;
+		}else{
+			$url = "{:U('Home/Strain/showDetailByStrain','','')}?selectStrain="+$selectData.join(',');
+			window.location.href = $url;
+		}
+	
+			
+	}
+ 
+	 $('.strain-list2').click(function(){
+	 	if($(this).children('span').children('input').prop("checked")){
+			$(this).children('span').children('input').removeAttr("checked");
+			$(this).css("background-image","url(__PUBLIC__/image/strain/mystrain.jpg)");
+		}else{
+			$(this).children('span').children('input').prop("checked",'true');
+			$(this).css("background-image","url(__PUBLIC__/image/strain/mystrain1.jpg)");
+		}
+	 });
+	 
+</script>
+</html>

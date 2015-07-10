@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>多值指标管理</title>
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/jquery-easyui/themes/default/easyui.css"/>
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/jquery-easyui/themes/icon.css"/>
+		<script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.1.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/jquery-easyui/jquery.easyui.min.js"></script>
+	</head>
+	<body class="easyui-layout" fit="true">
+		<div data-options="region:'center',border:false">
+			<table  id="dg" title="基本指标列表" toolbar="#toolbar" style="width: 100%; height: 100%;"></table>
+		</div>
+		<!-- easyUI的工具条 -->
+		<div id="toolbar">
+			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="location.reload();">刷新</a>
+			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-back" plain="true" onclick="history.go(-1);">后退</a>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				$('#dg').datagrid({
+					url : "{:U('Home/Data/getAllMouse','','')}",
+					singleSelect : false,
+					fit: true,
+					fitCloumns: true,
+					collapsible : true,
+					method : 'get',
+					pagination : true,
+					pageSize : 20,
+					pageList : [10, 20, 30],
+					rownumbers : true,
+					striped:true,
+					iconCls:'icon-ok',
+					idField : 'mouse_id',
+					columns : [[{
+						field : 'ck',
+						checkbox : true,
+						width : 130
+					},{
+						field : 'mouse_num',
+						title : 'Mouse ID',
+						sortable : true,
+						width : 130,
+					}, {
+						field : 'strain',
+						title : 'strain',
+						sortable : true,
+						width : 130
+					}, {
+						field : 'gender',
+						title : 'gender',
+						sortable : true,
+						width : 130
+					}, {
+						field : 'birth_date',
+						title : 'birth date',
+						sortable : true,
+						width : 130
+					}, {
+						field : 'exp_time',
+						title : 'experiment date',
+						sortable : true,
+						width : 130
+					}, {
+						field : 'remark',
+						title : 'remark',
+						width : 130,
+					}, {
+						field : 'mouse_id',
+						title : '操作',
+						width : 130,
+						formatter:function(val,row){
+							return '<a href="javascript:void(0)" onclick="lookDetail(\''+row.mouse_num+'\')">查看详情</a>';
+						}
+					}]]
+				});
+			});
+		</script>
+	</body>
+	<script type="text/javascript">
+		function reload(){
+			window.location.reload();
+			
+		}
+	
+		function lookDetail(mouse_num){
+			$url = "{:U('Home/Data/dataMval','','')}?mouse_num="+mouse_num;
+			window.location.href = $url;
+		}
+		
+	</script>
+</html>

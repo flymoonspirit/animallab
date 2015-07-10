@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Strain List</title>
+		<style>
+			body{
+				font-family:"Times New Roman", Times, serif;
+			}
+		
+			#strain-content{
+				width:480px;
+				height:230px;
+			}
+			
+			#strain-list{
+				width: 100%;
+				margin: 0% auto;
+				height: 200px;
+				overflow-y: auto;
+				padding: 0%;
+				padding-top: 10px;
+			}
+			.strain-item{
+				font-family:"Times New Roman", Times, serif;
+				padding: 0%;
+				margin: 0%;
+				float: left;
+				width:220px;
+				text-align: left;
+				text-indent:22px;
+				height: 32px;
+				margin-bottom: 5px;
+				color: #B9802A;
+				font-size: 18px;
+			}
+			
+			#btn-list{
+				margin: 0% auto;
+				padding: 0%;
+				width: 100%;
+				text-align: center;
+				margin-top: 30px;
+			}
+			
+			.strain-btn{
+				font-family:"Times New Roman", Times, serif;
+				width: 80px;
+				height: 36px;
+				margin-right: 10px;
+				color: #819662;
+				font-size: 16px;
+			}
+			.mck{
+				-webkit-appearance:checkbox;
+			}
+		</style>
+	</head>
+	<body>
+			<div id="strain-content">
+				<div id="strain-list">
+					<ul>
+						<foreach name="strainList" item="stl">
+						<li class="strain-item"><span><input class="mck" type="checkbox" /></span>&nbsp;<span>{$stl}</span></li>
+						</foreach>
+					</ul>
+				</div>
+				<div id="btn-list">
+					<input id="ok-btn" class="strain-btn" type="button" value="OK"></input>
+					<input id="cka-btn" class="strain-btn" type="button" value="Check All"></input>
+					<input id="in-btn" class="strain-btn" type="button" value="Inverse"></input>
+					<input id="ca-btn" class="strain-btn" type="button" value="Cancel"></input>
+				</div>
+			</div>
+	</body>
+	<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/jquery-1.11.1.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/util.js"></script>
+	
+	<script>
+		$('#ok-btn').click(function(){
+			$map_id = "{$map_id}";
+			$findex_id = "{$findex_id}";
+			$selectData = [];
+			$(".mck").each(function(){
+				if($(this).is(':checked') == true){
+					$strain = $(this).parent('span').next('span').text();
+					$str= urlReplace($strain);
+					$selectData.push($str);
+				}
+			});
+			
+			$url = "{:U('Home/Detail/getDataByStrain','','')}?selectData="+$selectData.join(',')+"&map_id="+$map_id+"&findex_id="+$findex_id;
+			window.location.href = $url;
+			
+		});
+		
+		$('#cka-btn').click(function(){
+				$('.mck').prop("checked",'true');
+		});
+		
+		$('#in-btn').click(function(){
+			$(".mck").each(function(){
+				if($(this).prop("checked")){
+			    	$(this).removeAttr("checked");
+			   	}else{
+			    	$(this).prop("checked",'true');
+			  	 }
+			 })
+		});
+		
+		$('#ca-btn').click(function(){
+				$('.mck').removeAttr("checked");
+		});
+		
+		
+	</script>
+</html>

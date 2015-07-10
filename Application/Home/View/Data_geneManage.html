@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>基因指标管理</title>
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/jquery-easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/jquery-easyui/themes/icon.css">
+		<script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.1.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/jquery-easyui/jquery.easyui.min.js"></script>
+		<style>
+			.table{
+				width:400px;
+				border:2px solid green;
+				cellspacing:1px;
+				background:green;
+			}
+			.table td{
+				background:white;
+			}
+			.modify-w {
+				width: 90%;
+				margin: 0% auto;
+				padding: 0%;
+				margin-bottom: 10px;
+				height: auto;
+				font-family: "微软雅黑";
+				font-size: 13px;
+			}
+
+			.modify-w label {
+				line-height: 20px;
+			}
+
+			.modify-w input {
+				border: 1px solid #95B8E7;
+				width: 100%;
+				height: 20px;
+			}
+
+			.modify-w textarea {
+				border: 1px solid #95B8E7;
+				width: 100%;
+				height: 35px;
+			}
+
+			#modify-btn {
+				font-family: "微软雅黑";
+				font-size: 15px;
+			}
+
+		</style>
+	</head>
+
+		
+		
+		<form action="{:U('Home/UpGene/addIndex')}" method='post'>
+			<table class='table'>
+				<tr>
+					<td colspan='4' align='center'><strong>基因属性列表</strong></td>
+				</tr>
+				<tr>
+					<td>ID</td>
+					<td>索引号</td>
+					<td>名称</td>
+					<td>操作</td>
+				</tr>
+				<foreach name='index' item='v'>
+					<tr>
+						<td>{$v.id}</td>
+						<td>{$v.index}
+						</td>
+						<td>
+							{$v.name}
+						</td>
+						<td>
+							<a href="{:U('Home/UpGene/updateIndex',array('id'=>$v['id']))}">修改</a>
+						</td>
+						
+					</tr>
+				</foreach>
+
+
+			</table>
+		</form>
+			
+	</body>
+	
+</html>

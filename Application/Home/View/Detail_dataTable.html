@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Data Table</title>
+<link rel="stylesheet" href="__PUBLIC__/TinyTableV3/style.css" />
+</head>
+<body>
+	<div id="tablewrapper">
+		<div id="tableheader">
+        	<div >
+                <h2>From the following tables, you can get the detailed data.</h2>
+            </div>
+        </div>
+		<for start="0" end="$count" name="i">
+        <table cellpadding="0" cellspacing="0" border="0" id="table" class="tinytable">
+            <thead>
+                <tr>
+                    <th class="nosort"><h3>Mouse ID</h3></th>
+                    <th><h3>strain</h3></th>
+                    <th><h3>gender</h3></th>
+                    <th><h3>birth date</h3></th>
+                    <th><h3>experiment date</h3></th>
+                   <for start="0" end="$indexCountMax" name="j">
+                    <th><h3>{$j+1}&nbsp;day</h3></th>
+                   </for>
+                   <th><h3>remark</h3></th>
+                </tr>
+            </thead>
+            <tbody>
+            	<foreach name="mouseDataList[$i]" item="mdl">
+            	<if condition="trim($mdl['gender']) eq M">
+                <tr>
+                    <td>{$mdl['mouse_num']}</td>
+                   	<td>{$mdl['strain']}</td>
+                    <td>{$mdl['gender']}</td>
+                    <td>{$mdl['birth_date']}</td>
+                    <td>{$mdl['exp_time']}</td>
+                    <for start="0" end="$indexCountMax" name="j">
+                    	 <for start="0" end="count($mdl)-8" name="t">
+                    	<if condition="trim($mdl[$t]['date']) eq ($j+1)">
+                    		<assign name="THE_CURRENT_INDEX" value="$t" />
+                    	</if>
+                    	</for>
+                    	<present name="THE_CURRENT_INDEX"> <td>{$mdl[$THE_CURRENT_INDEX]['value']}</td> <else /> <td></td> </present>
+                    	<assign name="THE_CURRENT_INDEX" value="-1" />
+                    </for>
+                     <td>{$mdl['remark']}</td>
+                </tr>
+                </if>
+               </foreach>
+               <if condition="count($rsData[$i]['M']) gt 0">
+                <tr>
+                	<td colspan="{$indexCountMax+6}" style="background-color: #6B6868;color: #FFFFFF;height: 15px;">
+                		<span>Statistics：
+                			<foreach name="rsData[$i]['M']" item="rsdm">
+                				(date={$rsdm['date']},N={$rsdm['n']},AVG={$rsdm['avg']},SD={$rsdm['avg']},STD={$rsdm['std']})&nbsp;
+                			</foreach>
+                		</span>
+                	</td>
+                </tr>
+               </if>
+               <if condition="(count($rsData[$i]['M']) gt 0) and (count($rsData[$i]['F']) gt 0)">
+               <tr>
+                    <td style="height: 10px;"></td>
+                   	<td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+               <for start="0" end="$indexCountMax" name="j">
+                    <td></td>
+               </for>
+               		<td></td>
+               </tr>
+              </if>
+               <foreach name="mouseDataList[$i]" item="mdl">
+               	<if condition="trim($mdl['gender']) eq F">
+                <tr>
+                    <td>{$mdl['mouse_num']}</td>
+                   	<td>{$mdl['strain']}</td>
+                    <td>{$mdl['gender']}</td>
+                    <td>{$mdl['birth_date']}</td>
+                    <td>{$mdl['exp_time']}</td>
+                    <for start="0" end="$indexCountMax" name="j">
+                    	 <for start="0" end="count($mdl)-8" name="t">
+                    	<if condition="trim($mdl[$t]['date']) eq ($j+1)">
+                    		<assign name="THE_CURRENT_INDEX" value="$t" />
+                    	</if>
+                    	</for>
+                    	<present name="THE_CURRENT_INDEX"> <td>{$mdl[$THE_CURRENT_INDEX]['value']}</td> <else /> <td></td> </present>
+                    	<assign name="THE_CURRENT_INDEX" value="-1" />
+                   </for>
+                   <td>{$mdl['remark']}</td>
+                </tr>
+                </if>
+               </foreach>
+               <if condition="count($rsData[$i]['F']) gt 0">
+                <tr>
+                	<td colspan="{$indexCountMax+6}" style="background-color: #6B6868;color: #FFFFFF;height: 15px;">
+                		<span>Statistics：
+                			<foreach name="rsData[$i]['F']" item="rsdf">
+                				(date={$rsdf['date']},N={$rsdf['n']},AVG={$rsdf['avg']},SD={$rsdf['avg']},STD={$rsdf['std']})&nbsp;
+                			</foreach>
+                		</span>
+                	</td>
+                </tr>
+               </if>
+            </tbody>
+        </table>
+        <if condition="$i lt ($count-1)">
+        <div style="border-bottom: 1px dashed #DB5656; width: 98%;height: 3px;margin-bottom: 10px;margin-top:10px;"></div>
+        </if>
+        </for>
+    </div>
+	<script type="text/javascript" src="__PUBLIC__/TinyTableV3/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>MDB - Survey page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link href="__PUBLIC__/css/Detail_showDetailBySurvey.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/tablecloth/tablecloth.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="__PUBLIC__/tablecloth/tablecloth.js"></script>
+<!--[if lt IE 7]>
+	<link href="__PUBLIC__/css/Index_index_ie.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<style>
+	body{
+		background: #E7E7E7;
+	}
+	
+	.gd-td{
+			color:#FFFFFF;
+			text-align: center;
+		}
+	.MF-td{
+		color:#0092DC;
+		text-align: center;
+	}
+	
+	#graph-div{
+		margin:0% auto;
+		margin-top:10px;
+		width:98%;
+	}
+	
+	table td{
+		font-size: 15px;
+	}
+	
+	table th{
+		font-size: 15px;
+	}
+</style>
+
+</head>
+
+<body>
+  <!-- header -->
+  <div id="header">
+    <div class="row-1">
+    	<div class="container">
+      	<h1><a >Xiao's<span>Lab</span></a></h1>
+        <a href="#" class="rss"><img src="__PUBLIC__/image/index/rss.jpg" alt="" /></a>
+      </div>
+    </div>
+    <div class="row-2">
+    	<div class="container">
+      	<!-- .nav -->
+      	<ul class="nav">
+          <li class="first"><a href="{:U('Home/Index/index','','')}" >Home</a></li>
+          <li><a href="{:U('Home/Survey/showSurvey','','')}" class="current">Survey</a></li>
+          <li style="margin-right: 230px;"><a href="{:U('Home/Strain/showStrain','','')}">Strain</a></li>
+          <li id="search-li" style="background: none;"><input id="searchcontent" name="searchcontent" type="text"/><input id="search-btn" type="button" value="GO"/></li>
+        </ul>
+      	<!-- /.nav -->
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- content -->
+  <div id="content" style="padding-bottom: 5px;">
+  	<div id="current-position">
+  		<div id="current-position-text">
+  			<div class="text-location"><span style="color: #5B88C4;font-size: 15px;">Current&nbsp;Location&nbsp;</span>><a style="color: #0075D2;">&nbsp;Data details</a></div>
+  			<div class="text-survey">
+  					<div  id="h2">List strains</div>
+  					<div  id="select-strain" onmouseout="selectStrain('2');" onmouseover="selectStrain('1');">Select Strain</div>
+  			</div>
+  				
+  		</div>
+  		<div id="current-position-img">
+  			<img style="width: auto;height: 180px;" src="__PUBLIC__/image/strain/show_strain.jpg" />
+  		</div>
+  	</div>
+  	<div id="survey-list">
+  		<div id="select-info">
+  			<p>Index：<span>{$findex.findex_name}&nbsp;>&nbsp;{$sindex.name}<if condition="($sindex['unit'] neq null) and ($sindex['unit'] neq '')">({$sindex.unit})</if></span></p>
+  			<p>Remark：<span><if condition="$sindex.remark eq null or $sindex.remark eq ''">none</if>{$sindex.remark}</span></p>
+  			<if condition="($selectStrain eq null) or ($selectStrain eq '')">
+  				<p style="margin-top:8px;">Strains：<span style="color:#D83737;">Please select at least one strain.</span></p>
+  			</if>
+  			<if condition="($selectStrain neq null) and ($selectStrain neq '')">
+  				<p>Strains：<span>{$selectStrain}</span></p>
+  			</if>
+  		</div>
+  		<div id="data-info">
+  		<for start="0" end="$count">
+	  		<table id="tab-list" cellspacing="0" cellpadding="0" style="font-size:15px;">
+				<tr>
+					<th>Mouse ID</th>
+					<th>strain</th>
+					<th>gender</th>
+					<th>birth date</th>
+					<th>experiment date</th>
+					<th>{$sindex.name}</th>
+					<th>remark</th>
+				</tr>
+			<foreach name="mouseDataList[$i]" item="mdl1">
+				<if condition="trim($mdl1['gender']) eq M">
+				<tr>
+					<td>{$mdl1['mouse_num']}</td>
+					<td>{$mdl1['strain']}</td>
+					<td>{$mdl1['gender']}</td>
+					<td>{$mdl1['birth_date']}</td>
+					<td>{$mdl1['exp_time']}</td>
+					<td>{$mdl1[$sindex['index']]}</td>
+					<td>{$mdl1['remark']}</td>
+				</tr>
+				</if>
+			</foreach>
+			<if condition="($mf_count[$i][M] eq 1) and ($mf_count[$i][F] eq 1)">
+			<tr>
+				<td style="background-color: #FFFFFF;height: 10px;" class="MF-td"></td>
+				<td style="background-color: #FFFFFF; height: 10px;" class="MF-td"></td>
+				<td style="background-color: #FFFFFF; height: 10px;" class="MF-td"></td>
+				<td style="background-color: #FFFFFF; height: 10px;" class="MF-td"></td>
+				<td style="background-color: #FFFFFF; height: 10px;" class="MF-td"></td>
+				<td style="background-color: #FFFFFF; height: 10px;" class="MF-td"></td>
+				<td style="background-color: #FFFFFF; height: 10px;" class="MF-td"></td>
+			</tr>
+			</if>
+			<foreach name="mouseDataList[$i]" item="mdl2">
+				<if condition="trim($mdl2['gender']) eq F">
+				<tr>
+					<td>{$mdl2['mouse_num']}</td>
+					<td>{$mdl2['strain']}</td>
+					<td>{$mdl2['gender']}</td>
+					<td>{$mdl2['birth_date']}</td>
+					<td>{$mdl2['exp_time']}</td>
+					<td>{$mdl2[$sindex['index']]}</td>
+					<td>{$mdl2['remark']}</td>
+				</tr>
+				</if>	
+			</foreach>
+	  		</table>
+	  		<div style="height: 2px; width: 100%; border-bottom: 1px dashed #CCCCCC;"></div>
+		</for>
+  		</div>
+  	</div>
+  </div>
+  
+  <!-- footer -->
+  <div id="footer">
+  	<div class="container">
+      <div class="indent">
+      <div class="v">	Fly&nbsp;Moon &copy; 2014&nbsp;v1.0&nbsp;&nbsp;&nbsp;{$Think.now}</div>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="__PUBLIC__/mustache/mustache.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="__PUBLIC__/layer/layer.min.js"></script>
+<script src="__PUBLIC__/echarts/build/echarts-plain-map.js"></script>
+<script>
+	$('#search-btn').click(function(){
+		$searchcontent = $('#searchcontent').val().trim().toLowerCase();
+		if($searchcontent.trim() == '' || $searchcontent.trim() == null){
+			layer.alert('Please enter the search content.', 3,'warn');
+			return ;
+		}else{
+			if($searchcontent == 'strain'){
+				window.location.href = "{:U('Home/Strain/showStrain','','')}";
+			}else if($searchcontent == 'survey'){
+				window.location.href = "{:U('Home/Survey/showSurvey','','')}";
+			}
+		}
+	});
+</script>
+<script>
+	function selectStrain(type){
+		if(type == '1'){
+			$('#select-strain').css({'background-image':' url(__PUBLIC__/image/survey/select-strain1.jpg)' });
+			$('#select-strain').css('color','#F1680C');
+		}
+		if(type == '2'){
+			$('#select-strain').css({'background-image':' url(__PUBLIC__/image/survey/select-strain.jpg)' });
+			$('#select-strain').css('color','#886720');
+		}
+	}
+	
+	$('#select-strain').click(function(){
+		var findex_id = "{$findex['findex_id']}";
+		var map_id = "{$sindex['map_id']}";
+		$url = '{:U("Home/Detail/strainList","","")}?findex_id='+findex_id+'&map_id='+map_id;
+		$.layer({
+		    type: 1,
+		    title: 'All Strains',
+		    area: ['420px', '260px'],
+		    shade: [0.5,'#000',true],
+		    offset: ['200px',($(window).width() - 420)/2 + 'px'],
+		    zIndex: 19,
+		    page: {
+		       url:$url
+		    }, success: function(){
+		        layer.shift('left'); //左边动画弹出
+		    }
+		});
+	});
+</script>
+
+</html>

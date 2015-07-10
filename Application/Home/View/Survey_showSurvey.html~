@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>MDB - Survey page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link href="__PUBLIC__/css/Survey_showSurvey.css" rel="stylesheet" type="text/css" />
+<!--[if lt IE 7]>
+	<link href="__PUBLIC__/css/Index_index_ie.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<style>
+body{
+	background: #E7E7E7;
+}
+
+</style>
+
+</head>
+
+<body>
+  <!-- header -->
+  <div id="header">
+    <div class="row-1">
+    	<div class="container">
+      	<h1><a >Biology<span>Lab</span></a></h1>
+        <a href="#" class="rss"><img src="__PUBLIC__/image/index/rss.jpg" alt="" /></a>
+      </div>
+    </div>
+    <div class="row-2">
+    	<div class="container">
+      	<!-- .nav -->
+      	<ul class="nav">
+          <li class="first"><a href="{:U('Home/Index/index','','')}" >Home</a></li>
+          <li><a href="{:U('Home/Survey/showSurvey','','')}" class="current">Survey</a></li>
+          <li style="margin-right: 230px;"><a href="{:U('Home/Strain/showStrain','','')}">Strain</a></li>
+          <li id="search-li" style="background: none;"><input id="searchcontent" name="searchcontent" type="text"/><input id="search-btn" type="button" value="GO"/></li>
+        </ul>
+      	<!-- /.nav -->
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- content -->
+  <div id="content">
+  	<div id="current-position">
+  		<div id="current-position-text">
+  			<div class="text-location"><span style="color: #5B88C4;font-size: 15px;">Current&nbsp;Location&nbsp;</span>><a style="color: #0075D2;">&nbsp;Survey</a></div>
+  			<div class="text-survey">
+  				<h2>Survey</h2>
+  			</div>
+  		</div>
+  		<div id="current-position-img">
+  			<img style="width: auto;height: 180px;" src="__PUBLIC__/image/strain/show_strain.jpg" />
+  		</div>
+  	</div>
+  	<div id="survey-list">
+  		<div id="survey-list-left">
+  			<p>The first Index</p>
+  			<ul>
+  			<foreach name="findexList" item="fil">
+	  			<li><a href="javascript:void(0)" onmouseover="getSindex({$fil.findex_id});" onclick="getSindex('{$fil.findex_id}');">{$fil.findex_name}</a></li>
+	  		</foreach>
+  			</ul>
+  		</div>
+  		<div id="survey-list-right">
+  		</div>
+  		<div id="survey-list-right1" style="display: none;">
+  			<div class="survey-list-amount"><span>Amount：</span><span style="color:#4C4C4C;font-size: 15px;">{{findex.amount}}</span></div>
+  			<div class="survey-list-remark"><span>Remark：</span><span style="color:#4C4C4C;font-size: 15px;">{{findex.remark}}</span></div>
+  			{{#sindexList}}
+  			<div id="survey-sindex-item">
+  				<a href="javascript:void(0)" onclick="getDetail('{{map_id}}','{{findex.findex_id}}');">{{name}}</a>&nbsp;({{unit}})
+  			</div>
+  			{{/sindexList}}
+  		</div>
+  	</div>
+  </div>
+  
+  
+  <!-- footer -->
+  <div id="footer">
+  	<div class="container">
+      <div class="indent">
+      <div class="v">	Fly&nbsp;Moon &copy; 2014&nbsp;v1.0&nbsp;&nbsp;&nbsp;{$Think.now}</div>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="__PUBLIC__/mustache/mustache.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.1.js"></script>
+<script src="__PUBLIC__/layer/layer.min.js"></script>
+<script>
+	$('#search-btn').click(function(){
+		$searchcontent = $('#searchcontent').val().trim().toLowerCase();
+		if($searchcontent.trim() == '' || $searchcontent.trim() == null){
+			layer.alert('Please enter the search content.', 3,'warn');
+			return ;
+		}else{
+			if($searchcontent == 'strain'){
+				window.location.href = "{:U('Home/Strain/showStrain','','')}";
+			}else if($searchcontent == 'survey'){
+				window.location.href = "{:U('Home/Survey/showSurvey','','')}";
+			}
+		}
+	});
+</script>
+<script>
+	$(function(){
+		$se_findex_id = '{$se_findex_id}';
+		if($se_findex_id != null && $se_findex_id != ''){
+			getSindex($se_findex_id);
+		}else{
+			$findex_id = "{$findexList[0]['findex_id']}";
+			$.post("{:U('Home/Survey/getSindex','','')}",
+			{findex_id:$findex_id},
+			function(data){
+				var template = $('#survey-list-right1').html();
+					var views = Mustache.render(template, data);
+					$('#survey-list-right').html(views);
+			});
+		}
+	});
+
+	function getSindex(findex_id){
+		$.post("{:U('Home/Survey/getSindex','','')}",
+		{findex_id:findex_id},
+		function(data){
+			var template = $('#survey-list-right1').html();
+				var views = Mustache.render(template, data);
+				$('#survey-list-right').html(views);
+		});
+	}
+	
+	function getDetail(map_id,findex_id){
+		$url = "{:U('Home/Detail/showDetailBySurvey','','')}?map_id="+map_id+"&findex_id="+findex_id;
+		window.location.href = $url;
+	}
+	
+</script>
+</html>

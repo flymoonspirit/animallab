@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/jquery-easyui/themes/default/easyui.css"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/jquery-easyui/themes/icon.css"/>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="__PUBLIC__/jquery-easyui/jquery.easyui.min.js"></script>
+<title>修改密码</title>
+<style>
+	body{
+		color:#80B138;
+		font-size: 16px;
+		font-family: '微软雅黑 ';
+		background: #DFF3C6;
+	}
+	
+	#main{
+		margin:0 auto;
+		padding: 0%;
+		padding-top:20px;
+		margin-top:15px;
+		width: 90%;
+		height: 80%;
+		min-height: 350px;
+		border: 1px solid #CCC;
+		border-radius: 5px;
+		font-family: '微软雅黑 ';
+		box-shadow: 0 2px 6px #EEE;
+		background: white;
+	
+	}
+	
+	fieldset{
+		width:90%;
+		margin:0% auto;
+		line-height:35px;
+		border:1px groove #DAF5AA;
+	}
+	
+	input{
+	}
+	
+</style>
+</head>
+<body>
+	<div id="main">
+	<form id="form1" action="{:U('Home/Sys/modifyPwd','','')}" method="post">
+	<input id="user_id" name="user_id" value="{$_SESSION['user']['user_id']}" type="hidden">
+	<fieldset>
+		<legend>用户名与密码:</legend>
+		<label for="username">用户名:</label>
+		<input style="color:#80B138;" type="text" id="username" name="username" value="{$_SESSION['user']['username']}" readonly="readonly" /><br/>
+		<label for="password">原密码:</label>
+		<input type="password" id="password" name="password" /><br/>
+		<label for="pass">新密码:</label>
+		<input type="password" id="newpass" name="newpass" /><br/>
+		<label for="repass">重&nbsp;&nbsp;复:</label>
+		<input type="password" id="repass" name="repass" /><br/>
+		<a style="width: 50px;height: 23px;" href="javascript:void(0)"  class="easyui-linkbutton" onclick="modifyPwd();">&nbsp;确&nbsp;定&nbsp;</a>
+	</fieldset>
+	</form>
+	</div>
+</body>
+<script>
+	function modifyPwd(){
+		$password = $('#password').val();
+		$newpass = $('#newpass').val().trim();
+		$repass = $('#repass').val().trim();
+		if($password == null || $password == ''){
+			$.messager.alert('警告','请输入原密码');
+			$('#password').focus();
+			return ;
+		}
+		if($newpass != $repass){
+			$.messager.alert('警告','两次密码输入不相同！');
+			$('#newpass').focus();
+			return ;
+		}else{
+			$('#form1').submit();
+		}
+	}
+</script>
+</html>

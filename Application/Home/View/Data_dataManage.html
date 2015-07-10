@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>单值指标管理</title>
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/jquery-easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/jquery-easyui/themes/icon.css">
+		<script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.1.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/jquery-easyui/jquery.easyui.min.js"></script>
+		<style>
+			.modify-w {
+				width: 90%;
+				margin: 0% auto;
+				padding: 0%;
+				margin-bottom: 10px;
+				height: auto;
+				font-family: "微软雅黑";
+				font-size: 13px;
+			}
+
+			.modify-w label {
+				line-height: 20px;
+			}
+
+			.modify-w input {
+				border: 1px solid #95B8E7;
+				width: 100%;
+				height: 20px;
+			}
+
+			.modify-w textarea {
+				border: 1px solid #95B8E7;
+				width: 100%;
+				height: 35px;
+			}
+
+			#modify-btn {
+				font-family: "微软雅黑";
+				font-size: 15px;
+			}
+
+		</style>
+	</head>
+	<body class="easyui-layout" fit="true">
+		<div data-options="region:'center',border:false">
+			<table  id="dg" title="基本指标列表" toolbar="#toolbar" style="width: 100%; height: 100%;"></table>
+		</div>
+		<!-- easyUI的工具条 -->
+		<div id="toolbar">
+			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="location.reload();">
+				刷新
+			</a>
+			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="delMouseData();">
+				删除
+			</a>
+			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="cancelSelect();">
+				取消选择
+			</a>
+			<a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-back" plain="true" onclick="history.go(-1);">
+				后退
+			</a>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				$('#dg').datagrid({
+					url : "{:U('Home/Data/getAllMouse','','')}",
+					singleSelect : false,
+					fit : true,
+					fitCloumns : true,
+					collapsible : true,
+					method : 'get',
+					pagination : true,
+					pageSize : 20,
+					pageList : [10, 20, 30],
+					rownumbers : true,
+					striped : true,
+					iconCls : 'icon-ok',
+					idField : 'mouse_id',
+					columns : [[{
+						field : 'ck',
+						checkbox : true,
+						width : 130
+					}, {
+						field : 'mouse_num',
+						title : 'Mouse ID',
+						sortable : true,
+						width : 130,
+					}, {
+						field : 'strain',
+						title : 'strain',
+						sortable : true,
+						width : 130
+					}, {
+						field : 'gender',
+						title : 'gender',
+						sortable : true,
+						width : 130
+					}, {
+						field : 'birth_date',
+						title : 'birth date',
+						sortable : true,
+						width : 130
+					}, {
+						field : 'exp_time',
+						title : 'experiment date',
+						sortable : true,
+						width : 130
+					}, {
+						field : 'remark',
+						title : 'remark',
+						width : 130,
+					}, {
+						field : 'mouse_id',
+						title : '操作',
+						width : 130,
+						formatter : function(val, row) {
+							return '<span><a href="javascript:void(0)" onclick="lookDetail(\'' + row.mouse_num + '\')">查看详情</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="modifyData(\'' + val + '\',\'' + row.mouse_num + '\',\'' + row.strain + '\',\'' + row.gender + '\',\'' + row.birth_date + '\',\'' + row.exp_time + '\',\'' + row.remark + '\')">修改</a></span>';
+						}
+					}]]
+				});
+			});
+		</script>
+		<div id="w1" class="easyui-window" class="easyui-window" title="修改基本指标数据" data-options="modal:true,closed:true" style="width:380px;height:443px;padding:10px;">
+			<form id="mouse-form" name="mouse-form" action="{:U('Home/Data/modifyMouseData','','')}" method="post">
+				<input id="mouse_id" name="mouse_id" value="" type="hidden"/>
+				<div class="modify-w">
+					<label for="mouse_num">Mouse ID：</label>
+					<input id="mouse_num" name="mouse_num" value="" type="text"/>
+				</div>
+				<div class="modify-w">
+					<label for="strain">strain：</label>
+					<input id="strain" name="strain" value="" type="text"/>
+				</div>
+				<div class="modify-w">
+					<label for="gender">gender：</label>
+					<input id="gender" name="gender" value="" type="text"/>
+				</div>
+				<div class="modify-w">
+					<label for="birth_date">birth date：</label>
+					<input id="birth_date" name="birth_date" value="" type="text"/>
+				</div>
+				<div class="modify-w">
+					<label for="exp_time">experiment date：</label>
+					<input id="exp_time" name="exp_time" value="" type="text"/>
+				</div>
+				<div class="modify-w">
+					<label for="remark">remark：</label>
+					<br />
+					<textarea id="remark" name="remark"></textarea>
+				</div>
+				<div class="modify-w">
+					<a id="modify-btn" href="javascript:void(0)"  class="easyui-linkbutton" onclick="editData()">
+						&nbsp;&nbsp;确&nbsp;&nbsp;定&nbsp;&nbsp;
+					</a>
+				</div>
+			</form>
+		</div>
+	</body>
+	<script type="text/javascript">
+		function cancelSelect(){
+			$('#dg').datagrid('unselectAll');
+		}
+	
+		function reload() {
+			window.location.reload();
+		}
+
+		function lookDetail(mouse_num) {
+			$url = "{:U('Home/Data/dataDetail','','')}?mouse_num=" + mouse_num;
+			window.location.href = $url;
+		}
+
+		function modifyData(mouse_id, mouse_num, strain, gender, birth_date, exp_time, remark) {
+			$('#w1 #mouse_id').val(mouse_id);
+			$('#w1 #mouse_num').val(mouse_num);
+			$('#w1 #strain').val(strain);
+			$('#w1 #gender').val(gender);
+			$('#w1 #birth_date').val(birth_date);
+			$('#w1 #exp_time').val(exp_time);
+			$('#w1 #remark').val(remark);
+			$('#w1').window('open');
+			$('#w1 #mouse_num').focus();
+		}
+
+		function editData() {
+			$('#mouse-form').submit();
+		}
+		
+		function delMouseData(){
+			var rows = $('#dg').datagrid('getSelections');
+			var rowdata = [];
+			if(rows.length == 0){
+				$.messager.alert('警告','至少需要选择一条数据！');
+				return ;
+			}else{
+				$.messager.confirm('警告','确定删除？',function(cf){
+					if(cf){
+						for(var i=0;i<rows.length;i++){
+							rowdata.push(rows[i].mouse_num);
+						}
+						$.post("{:U('Home/Data/deleteMouseData','','')}",
+								{rowdata:rowdata.join(',')},
+								function(data){
+									if(data.status == '1'){
+										window.location.reload();
+									}
+								});
+					}
+				});
+			}
+		}
+
+	</script>
+</html>

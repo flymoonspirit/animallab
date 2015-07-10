@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>单值指标管理子页</title>
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/jquery-easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/jquery-easyui/themes/icon.css">
+		<script type="text/javascript" src="__PUBLIC__/js/jquery-1.11.1.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/jquery-easyui/jquery.easyui.min.js"></script>
+	<style>
+		.modify-w{
+			width: 90%;
+			margin:0% auto;
+			padding: 0%;
+			margin-bottom: 10px;
+			height: auto;
+			font-family: "微软雅黑";
+			font-size: 13px;
+		}
+		
+		.modify-w label{
+			line-height: 20px;
+		}
+		
+		.modify-w input{
+			border: 1px solid #95B8E7;
+			width: 100%;
+			height: 20px;
+		}
+		
+		#modify-btn{
+			font-family: "微软雅黑";
+			font-size: 13px;
+		}
+	
+	</style>
+	</head>
+	<body class="easyui-layout" fit="true">
+		<div data-options="region:'center',border:false">
+			<table  id="dg" title="详细指标列表" toolbar="#toolbar" style="width: 100%; height: 100%;"></table>
+		</div>
+		<!-- easyUI的工具条 -->
+		<div id="toolbar" style="padding:5px;height:auto">
+			<div style="margin-bottom:5px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="location.reload();">刷新</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="delDetailData();">删除</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="cancelSelect();">取消选择</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-back" plain="true" onclick="history.go(-1);">后退</a>
+			</div>
+			<div>
+         	<label for="sefindex"> 一级指标： </label>
+            <select id="sefindex" name="sefindex" class="easyui-combobox" panelHeight="auto" style="width:150px" data-options="onSelect: getDetaildata">
+                <if condition="$findexList eq null"><option value="java">无一级指标</option></if>
+                 <if condition="$findexList neq null">
+                 	<foreach name="findexList" item="fil">
+                 		<option value="{$fil.findex_id}">{$fil.findex_name}</option>
+                 	</foreach>
+                 </if>
+            </select>
+        </div>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				$mouse_num = '{$mouse_num}';
+				$findex_id = '{$findexList[0]["findex_id"]}';
+				$('#dg').datagrid({
+					url : "{:U('Home/Data/getDetaildata','','')}?findex_id="+$findex_id+"&mouse_num="+$mouse_num,
+					singleSelect : false,
+					fit: true,
+					fitCloumns: true,
+					collapsible : true,
+					method : 'get',
+					pagination : false,
+					pageSize : 20,
+					striped : true,
+					pageList : [10, 20, 30],
+					rownumbers : true,
+					iconCls:'icon-ok',
+					idField : 'index',
+					columns : [[{
+						field : 'ck',
+						checkbox : true,
+						width : 130
+					},{
+						field : 'mouse_num',
+						title : 'Mouse ID',
+						sortable : true,
+						width : 130,
+					}, {
+						field : 'name',
+						title : '二级指标',
+						sortable : true,
+						width : 130
+					}, {
+						field : 'value',
+						title : '值',
+						sortable : true,
+						width : 130,
+						editor:'text'
+					}, {
+						field : 'unit',
+						title : '单位',
+						sortable : true,
+						width : 130
+					}, {
+						field : 'remark',
+						title : 'remark',
+						width : 130,
+					}, {
+						field : 'sindex_id',
+						title : '操作',
+						width : 130,
+						formatter:function(val,row,id){
+							return '<a href="javascript:void(0)" onclick="editDetail(\''+row.index+'\',\''+val+'\',\''+row.name+'\',\''+row.value+'\',\''+row.mouse_num+'\')">修改</a>';
+						}
+					}]]
+				});
+			});
+		</script>
+		<div id="w2" class="easyui-window" class="easyui-window" title="修改指标值" data-options="modal:true,closed:true" style="width:300px;height:200px;padding:10px;">
+		<form name="editdetail-form" id="editdetail-form" action="{:U('Home/Data/modifyDetailData','','')}" method="post">
+			<input id="sindex_id" name="sindex_id" value="" type="hidden"/>
+			<input id="index" name="index" value="" type="hidden"/>
+			<input id=mouse_num name="mouse_num" value="" type="hidden"/>
+			<div class="modify-w">
+				<label for="name">指标：</label>
+				<input style="color: #338800" id="name" name="name" value="" type="text" readonly="readonly" />
+			</div>
+			<div class="modify-w">
+				<label for="value">值：</label>
+				<input id="value" name="value" value="" type="text" />
+			</div>
+			<div class="modify-w">
+				<a id="modify-btn" href="javascript:void(0)"  class="easyui-linkbutton" onclick="modifyDetailData();">&nbsp;确&nbsp;定&nbsp;</a>
+
+			</div>
+		</form>
+		</div>
+	</body>
+	<script>
+		function cancelSelect(){
+			$('#dg').datagrid('unselectAll');
+		}
+	
+		function getDetaildata(rec){
+			$mouse_num = '{$mouse_num}';
+			$findex_id = rec.value;
+			$('#dg').datagrid({
+				url :"{:U('Home/Data/getDetaildata','','')}",
+				queryParams:{
+					findex_id : $findex_id,
+					mouse_num : $mouse_num
+				}
+			},'load');
+		}
+		
+		function editDetail(index,sindex_id,name,value,mouse_num){
+			$('#sindex_id').val(sindex_id);
+			$('#index').val(index);
+			$('#name').val(name);
+			$('#value').val(value);
+			$('#mouse_num').val(mouse_num);
+			$('#w2').window('open');
+			$('#w2 #value').focus();
+		}
+		
+		function modifyDetailData(){
+			$('#editdetail-form').submit();
+		}
+		
+		function delDetailData(){
+			var rows = $('#dg').datagrid('getSelections');
+			var rowIndex = [];
+			var rowId = [];
+			if(rows.length == 0){
+				$.messager.alert('警告','至少需要选择一条数据！');
+				return ;
+			}else{
+				$.messager.confirm('警告','确定删除？',function(cf){
+					if(cf){
+						for(var i=0;i<rows.length;i++){
+							rowIndex.push(rows[i].index);
+							rowId.push(rows[i].sindex_id);
+						}
+						$.post("{:U('Home/Data/delDetailData','','')}",
+								{rowIndex:rowIndex.join(','),rowId:rowId.join(',')},
+								function(data){
+									if(data.status == '1'){
+										window.location.reload();
+									}
+								});
+					}
+				});
+			}
+		}
+	</script>
+</html>
